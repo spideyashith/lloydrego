@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const authRouter = require('./routes/auth');
+const authRouter = require('./auth');
 
 const app = express();
 
@@ -13,9 +13,12 @@ app.use(express.json());
 
 // CORS: allow your Vercel frontends (admin + client)
 const allowedOrigins = [
-  'https://lloydrego-wsxv.vercel.app',
-  'https://lloydrego-wsxv-j22l4vrmq-ashiths-projects-c4e5f5de.vercel.app'
+  'https://lloydrego-wsxv.vercel.app', // client
+  'https://lloydrego.vercel.app', // admin
+  'http://localhost:3000', // local client
+  'http://localhost:3001' // local admin
 ];
+
 
 app.use(cors({
   origin: (origin, cb) => {
@@ -35,6 +38,23 @@ app.get('/', (_, res) => res.send('Lloyd Rego Backend is running'));
 // Mount auth routes → POST /api/auth/login
 app.use('/api/auth', authRouter); // [3]
 
+// // Temporary: Sample /api/songs route for frontend
+// app.get('/api/songs', (req, res) => {
+//   res.json([
+//     {
+//       _id: '1',
+//       title: 'Sample Song',
+//       artist: 'Lloyd Rego',
+//       genre: 'Pop',
+//       coverUrl: '',
+//       audioUrl: '',
+//       spotifyUrl: '',
+//       appleMusicUrl: '',
+//       featured: true,
+//       published: true
+//     }
+//   ]);
+// });
 // Mount your other routers as before, e.g.
 // const songsRouter = require('./routes/songs');
 // app.use('/api/songs', songsRouter);
